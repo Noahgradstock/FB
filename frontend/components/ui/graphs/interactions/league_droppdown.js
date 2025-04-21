@@ -3,7 +3,7 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/16/solid";
 import { useEffect, useState } from "react";
-import useTeamsStore from "../store_data/teams_store.js";
+import useTeamsStore from "../../../store_data/teams_store.js";
 
 function DropdownBase({ title, items, onSelect }) {
   return (
@@ -99,7 +99,7 @@ function TeamDropdown({ title, setTeam }) {
     setTeam(team);
   };
 
-  if (!selectedLeague) return <div className="text-sm text-gray-400">Välj liga först</div>;
+  if (!selectedLeague) return <div className="text-sm text-gray-400 italic">Välj först en liga</div>;
   if (loading) return <div>Loading teams...</div>;
   if (error) return <div>Error: {error}</div>;
 

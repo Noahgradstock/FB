@@ -90,3 +90,8 @@ Gammalt_bös/
 .env
 __pycache__/
 node_modules/
+node_modules/
+
+node_modules/
+__pycache__/
+*.pyc

@@ -1,16 +1,16 @@
 "use client";
 
 import React from 'react';
-import DataFetcher from "../../components/interactions/get_team_stats";
+import DataFetcher from "../../components/ui/graphs/interactions/get_team_stats";
 import HomeTeamFormChart from "../../components/ui/graphs/graphs/hometeam_form_graph";
 import AwayTeamFormChart from "../../components/ui/graphs/graphs/awayteam_form_graph";
-import HistogramChart from "../../components/ui/graphs/results_histogram";
-import PositiveNegativeBarChart from "../../components/ui/graphs/winstreak_graph";
+import HistogramChart from "../../components/ui/graphs/graphs/results_histogram";
+import PositiveNegativeBarChart from "../../components/ui/graphs/graphs/winstreak_graph";
 import PremierLeagueTable from "../../components/ui/graphs/graphs/league_table";
-import { HomeTeam } from "../../components/interactions/league_droppdown";
-import { LeagueDropdown } from "../../components/interactions/league_droppdown";
-import { AwayTeam } from "../../components/interactions/league_droppdown";
-import TeamInfoDisplay from "../../components/ui/graphs/TeamInfoDisplay"
+import { HomeTeam } from "../../components/ui/graphs/interactions/league_droppdown";
+import { LeagueDropdown } from "../../components/ui/graphs/interactions/league_droppdown";
+import { AwayTeam } from "../../components/ui/graphs/interactions/league_droppdown";
+import TeamInfoDisplay from "../../components/ui/graphs/display_info/team_stats_display"
 
 
 const Home = () => {

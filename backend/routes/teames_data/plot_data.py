@@ -5,7 +5,7 @@ import os
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
 with Notebook():
-    from clean_data import get_team_form, df, get_teams_by_league, get_home_vs_away_summary
+    from clean_data import get_team_form, df, get_team_league, get_home_vs_away_summary
 
 data_routes = Blueprint('data', __name__)
 
@@ -28,7 +28,6 @@ def get_chart_histogram():
         {"name": "Apr", "value": 30}
     ]
     return jsonify(data)
-
 
 
 
@@ -78,17 +77,19 @@ def get_team_data():
 
 @data_routes.route('/api/teams', methods=['GET'])
 def get_teams():
-    league = request.args.get("league")
-    
-    if league:
-        teams = get_teams_by_league(league)
-    else:
-        teams = [] 
-    
-    leagues = sorted(df["Div"].astype(str).unique().tolist())
+    selected_league = request.args.get('league')
+    teams_by_league, leagues = get_team_league()
 
+    # Om en liga är specificerad, returnera endast lagen i den ligan
+    if selected_league:
+        if selected_league in leagues:
+            index = leagues.index(selected_league)
+            return jsonify({"teams": teams_by_league[index]})
+        else:
+            return jsonify({"error": "Ligan hittades inte"}), 404
+
+    # Om ingen liga är vald, returnera alla ligor
     return jsonify({
-        "teams": teams,
         "leagues": leagues
     })
 

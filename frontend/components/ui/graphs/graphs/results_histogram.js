@@ -1,6 +1,6 @@
 "use client";
 
-import useTeamsStore from '../../store_data/teams_store'; 
+import useTeamsStore from '../../../store_data/teams_store'; 
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 const HistogramChart = () => {

@@ -1,6 +1,6 @@
 "use client";
 
-import useTeamsStore from '../../store_data/teams_store'; 
+import useTeamsStore from '../../../store_data/teams_store'; 
 
 export default function TeamInfoDisplay() {
   const selectedLeague = useTeamsStore((state) => state.selectedLeague);
