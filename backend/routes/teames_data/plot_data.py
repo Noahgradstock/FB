@@ -5,7 +5,7 @@ import os
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
 with Notebook():
-    from clean_data import get_team_form, df, get_team_league, get_home_vs_away_summary
+    from funktions_clean_data import get_team_form, df, get_team_league, get_home_vs_away_summary
 
 data_routes = Blueprint('data', __name__)
 

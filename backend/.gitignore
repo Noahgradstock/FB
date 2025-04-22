@@ -1,0 +1,9 @@
+# .gitignore för Flask
+__pycache__/
+*.pyc
+instance/
+.env
+venv/
+.DS_Store
+.vscode/
+*.log
