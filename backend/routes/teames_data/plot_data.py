@@ -5,7 +5,7 @@ import os
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
 with Notebook():
-    from funktions_clean_data import get_team_form, df, get_team_league, get_home_vs_away_summary
+    from send_to_frontend import get_team_form, df, get_team_league, get_home_vs_away_summary, get_fixture_by_league
 
 data_routes = Blueprint('data', __name__)
 
@@ -46,12 +46,16 @@ def get_team_data():
         return jsonify({"error": "league, home_team, and away_team are required"}), 400
 
     try:
+        # Hämta statistik för lagen
         league_df = df[df['Div'] == league]
+
+        # Hämta fixtures från den valda ligan
+        fixtures_list = get_fixture_by_league(league)
 
         # Statistik mellan lagen
         home_vs_away_stats = get_home_vs_away_summary(league_df, home_team, away_team)
 
-        # Formkurvor
+        # Formkurvor för lagen
         home_team_form = get_team_form(league_df, home_team)
         away_team_form = get_team_form(league_df, away_team)
 
@@ -65,13 +69,13 @@ def get_team_data():
             "team_form": {
                 home_team: home_team_form,
                 away_team: away_team_form
-            }
+            },
+            "fixtures": fixtures_list  # Här skickar vi direkt tillbaka listan med matcher
         })
 
     except Exception as e:
         print("❌ Fel i backend:", e)
         return jsonify({"error": "Internt serverfel"}), 500
-
 
 
 

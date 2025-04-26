@@ -1,4 +1,3 @@
-// teams_store.js
 import { create } from 'zustand';
 
 const useTeamsStore = create((set, get) => ({
@@ -8,6 +7,7 @@ const useTeamsStore = create((set, get) => ({
 
   leagueData: null,
   matchupData: null,
+  fixtures: [],
 
   headToHeadStats: null,
   homeTeamForm: null,
@@ -22,7 +22,7 @@ const useTeamsStore = create((set, get) => ({
     set({ selectedHomeTeam: team });
     await get().fetchMatchupData();
   },
-  
+
   setAwayTeam: async (team) => {
     set({ selectedAwayTeam: team });
     await get().fetchMatchupData();
@@ -45,11 +45,15 @@ const useTeamsStore = create((set, get) => ({
       const homeTeamForm = data?.team_form?.[selectedHomeTeam] || null;
       const awayTeamForm = data?.team_form?.[selectedAwayTeam] || null;
 
+      // Spara fixtures (kommande matcher)
+      const fixtures = data?.fixtures || [];
+
       set({
         matchupData: data,
         headToHeadStats,
         homeTeamForm,
         awayTeamForm,
+        fixtures, // Sätt fixtures här
       });
 
     } catch (err) {
@@ -59,6 +63,7 @@ const useTeamsStore = create((set, get) => ({
         headToHeadStats: null,
         homeTeamForm: null,
         awayTeamForm: null,
+        fixtures: [], // Nollställ fixtures vid fel
       });
     }
   },
