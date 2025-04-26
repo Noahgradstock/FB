@@ -12,6 +12,7 @@ import { LeagueDropdown } from "../../components/ui/graphs/interactions/league_d
 import { AwayTeam } from "../../components/ui/graphs/interactions/league_droppdown";
 import TeamInfoDisplay from "../../components/ui/graphs/display_info/team_stats_display"
 import FixturesComponent from "../../components/ui/graphs/display_info/uppcomming_games"
+import LeagueTableComponent from "../../components/ui/graphs/display_info/league_table"
 
 
 const Home = () => {
@@ -29,7 +30,6 @@ const Home = () => {
         <div className='flex flex-row justify-center gap-4 mt-10'>
         <AwayTeam />
         </div>
-        <TeamInfoDisplay />
         <DataFetcher />
       </div>
       {/* Charts - window */}
@@ -49,8 +49,9 @@ const Home = () => {
     </div>
     <div className="text-center p-6 max-w-6xl w-full rounded-lg shadow-lg bg-white bg-opacity-60 my-[30px] mx-[20px]">  
     <h1 className="text-6xl font-bold mb-4 text-blue-900">Här kommer en tabell från den aktuella ligan visas!</h1>
-    <PremierLeagueTable />
+    <LeagueTableComponent />
     <FixturesComponent />
+    <TeamInfoDisplay />
     </div>
   </div>
   );

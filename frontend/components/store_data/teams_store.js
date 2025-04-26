@@ -8,6 +8,8 @@ const useTeamsStore = create((set, get) => ({
   leagueData: null,
   matchupData: null,
   fixtures: [],
+  uppcomming_games: [], // Viktigt att denna finns
+  leagueTable: [],       // Lägg till denna!
 
   headToHeadStats: null,
   homeTeamForm: null,
@@ -45,15 +47,16 @@ const useTeamsStore = create((set, get) => ({
       const homeTeamForm = data?.team_form?.[selectedHomeTeam] || null;
       const awayTeamForm = data?.team_form?.[selectedAwayTeam] || null;
 
-      // Spara fixtures (kommande matcher)
-      const fixtures = data?.fixtures || [];
+      const uppcomming_games = data?.uppcomming_games || [];
+      const leagueTable = data?.league_table || []; // 👈 NYTT: hämta ligatabellen från API
 
       set({
         matchupData: data,
         headToHeadStats,
         homeTeamForm,
         awayTeamForm,
-        fixtures, // Sätt fixtures här
+        uppcomming_games,
+        leagueTable, // 👈 NYTT: spara ligatabellen i state
       });
 
     } catch (err) {
@@ -63,7 +66,9 @@ const useTeamsStore = create((set, get) => ({
         headToHeadStats: null,
         homeTeamForm: null,
         awayTeamForm: null,
-        fixtures: [], // Nollställ fixtures vid fel
+        fixtures: [],
+        uppcomming_games: [],
+        leagueTable: [], // 👈 Nollställ även denna vid fel
       });
     }
   },

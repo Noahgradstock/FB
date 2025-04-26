@@ -5,7 +5,7 @@ import os
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
 with Notebook():
-    from send_to_frontend import get_team_form, df, get_team_league, get_home_vs_away_summary, get_fixture_by_league
+    from send_to_frontend import get_team_form, df, get_team_league, get_home_vs_away_summary, get_fixture_by_league, create_league_table
 
 data_routes = Blueprint('data', __name__)
 
@@ -42,36 +42,40 @@ def get_team_data():
     print(f"Hemmalag: {home_team}")
     print(f"Bortalag: {away_team}")
 
-    if not league or not home_team or not away_team:
-        return jsonify({"error": "league, home_team, and away_team are required"}), 400
+    if not league:
+        return jsonify({"error": "league is required"}), 400
 
     try:
-        # Hämta statistik för lagen
+        # Hämta ligans DataFrame
         league_df = df[df['Div'] == league]
 
-        # Hämta fixtures från den valda ligan
-        fixtures_list = get_fixture_by_league(league)
+        # Hämta fixtures för ligan
+        uppcomming_games = get_fixture_by_league(league)
 
-        # Statistik mellan lagen
-        home_vs_away_stats = get_home_vs_away_summary(league_df, home_team, away_team)
+        # Skapa ligatabell
+        league_table_df = create_league_table(league)
+        league_table = league_table_df.reset_index().to_dict(orient='records')  # Konvertera till JSON-kompatibelt
 
-        # Formkurvor för lagen
-        home_team_form = get_team_form(league_df, home_team)
-        away_team_form = get_team_form(league_df, away_team)
+        response = {
+            "uppcomming_games": uppcomming_games,
+            "league_table": league_table
+        }
 
-        print("📊 Uträknad statistik:")
-        print(f"{home_team} vs {away_team}: {home_vs_away_stats}")
+        # Om home_team och away_team är skickade, addera head-to-head och form
+        if home_team and away_team:
+            home_vs_away_stats = get_home_vs_away_summary(league_df, home_team, away_team)
+            home_team_form = get_team_form(league_df, home_team)
+            away_team_form = get_team_form(league_df, away_team)
 
-        return jsonify({
-            "head_to_head": {
+            response["head_to_head"] = {
                 f"{home_team}_vs_{away_team}": home_vs_away_stats
-            },
-            "team_form": {
+            }
+            response["team_form"] = {
                 home_team: home_team_form,
                 away_team: away_team_form
-            },
-            "fixtures": fixtures_list  # Här skickar vi direkt tillbaka listan med matcher
-        })
+            }
+
+        return jsonify(response)
 
     except Exception as e:
         print("❌ Fel i backend:", e)
