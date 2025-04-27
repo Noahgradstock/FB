@@ -14,6 +14,8 @@ const useTeamsStore = create((set, get) => ({
   headToHeadStats: null,
   homeTeamForm: null,
   awayTeamForm: null,
+  avgHomeGoals: 0,
+  avgAwayGoals: 0,
 
   setLeague: async (league) => {
     set({ selectedLeague: league });
@@ -47,6 +49,9 @@ const useTeamsStore = create((set, get) => ({
       const homeTeamForm = data?.team_form?.[selectedHomeTeam] || null;
       const awayTeamForm = data?.team_form?.[selectedAwayTeam] || null;
 
+      const avgHomeGoals = data?.avg_goals?.home_team_avg_goals || 0;
+      const avgAwayGoals = data?.avg_goals?.away_team_avg_goals || 0;
+
       const uppcomming_games = data?.uppcomming_games || [];
       const leagueTable = data?.league_table || []; // 👈 NYTT: hämta ligatabellen från API
 
@@ -55,8 +60,10 @@ const useTeamsStore = create((set, get) => ({
         headToHeadStats,
         homeTeamForm,
         awayTeamForm,
+        avgHomeGoals,
+        avgAwayGoals,
         uppcomming_games,
-        leagueTable, // 👈 NYTT: spara ligatabellen i state
+        leagueTable, 
       });
 
     } catch (err) {
@@ -66,9 +73,11 @@ const useTeamsStore = create((set, get) => ({
         headToHeadStats: null,
         homeTeamForm: null,
         awayTeamForm: null,
+        avgHomeGoals: 0,
+        avgAwayGoals: 0,
         fixtures: [],
         uppcomming_games: [],
-        leagueTable: [], // 👈 Nollställ även denna vid fel
+        leagueTable: [], 
       });
     }
   },

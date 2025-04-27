@@ -40,9 +40,9 @@ const HistogramChart = () => {
           <YAxis allowDecimals={false} />
           <Tooltip />
           <Legend />
-          <Bar dataKey="Vinster" fill="#4ade80" />
-          <Bar dataKey="Förluster" fill="#f87171" />
-          <Bar dataKey="Oavgjorda" fill="#60a5fa" />
+          <Bar dataKey="Vinster" fill="#4ade80" barSize={100} />
+          <Bar dataKey="Förluster" fill="#f87171" barSize={100} />
+          <Bar dataKey="Oavgjorda" fill="#60a5fa" barSize={100} />
         </BarChart>
       </ResponsiveContainer>
     </div>

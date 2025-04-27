@@ -5,7 +5,7 @@ import os
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
 with Notebook():
-    from send_to_frontend import get_team_form, df, get_team_league, get_home_vs_away_summary, get_fixture_by_league, create_league_table
+    from send_to_frontend import get_team_form, df, get_team_league, get_home_vs_away_summary, get_fixture_by_league, get_avg_goals_for_home_and_away, create_league_table
 
 data_routes = Blueprint('data', __name__)
 
@@ -74,6 +74,9 @@ def get_team_data():
                 home_team: home_team_form,
                 away_team: away_team_form
             }
+
+            avg_goals = get_avg_goals_for_home_and_away(league, home_team, away_team)
+            response["avg_goals"] = avg_goals
 
         return jsonify(response)
 
