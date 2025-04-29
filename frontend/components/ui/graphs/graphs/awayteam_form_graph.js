@@ -3,16 +3,16 @@
 import useTeamsStore from "../../../store_data/teams_store";
 
 const AwayTeamFormChart = () => {
-  const { matchupData, selectedAwayTeam: selectedAwayTeam } = useTeamsStore();
-  const form = matchupData?.team_form?.[selectedAwayTeam] || [];
+  const selectedAwayTeam = useTeamsStore(state => state.selectedAwayTeam);
+  const awayTeamForm = useTeamsStore(state => state.awayTeamForm); // <-- Läser rätt
 
   const summary = {
-    W: form.filter(result => result === "W").length,
-    D: form.filter(result => result === "D").length,
-    L: form.filter(result => result === "L").length,
+    W: awayTeamForm.filter(result => result === "W").length,
+    D: awayTeamForm.filter(result => result === "D").length,
+    L: awayTeamForm.filter(result => result === "L").length,
   };
 
-  if (!form.length) {
+  if (!awayTeamForm.length) {
     return (
       <div className="w-full mt-6 bg-white p-4 rounded shadow-md text-center text-gray-500">
         Ingen formdata tillgänglig för {selectedAwayTeam}.
@@ -24,7 +24,7 @@ const AwayTeamFormChart = () => {
     <div className="w-full mt-6 bg-white p-4 rounded shadow-md">
       <h2 className="text-xl font-bold mb-4 text-center">Formkurva: {selectedAwayTeam}</h2>
       <div className="flex justify-center gap-2 mb-4">
-        {form.map((result, index) => {
+        {awayTeamForm.map((result, index) => {
           let color = '';
           if (result === "W") color = "bg-green-400";
           if (result === "D") color = "bg-gray-400";

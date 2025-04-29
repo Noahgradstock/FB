@@ -2,9 +2,9 @@ import React from 'react';
 import useTeamsStore from '../../../store_data/teams_store'; 
 
 const FixturesComponent = () => {
-  const { uppcomming_games } = useTeamsStore(state => state);
+  const fixtures = useTeamsStore(state => state.fixtures); // <-- Använd fixtures istället
 
-  if (!uppcomming_games || uppcomming_games.length === 0) {
+  if (!fixtures || fixtures.length === 0) {
     return <div>Inga kommande matcher hittades.</div>;
   }
 
@@ -19,12 +19,12 @@ const FixturesComponent = () => {
         <div>Bortalag</div>
       </div>
 
-      {uppcomming_games.map((game, index) => (
+      {fixtures.map((game, index) => (
         <div key={index} className="grid grid-cols-4 gap-4 py-2 border-b">
-          <div>{new Date(game.Date).toLocaleDateString('sv-SE')}</div>
-          <div>{game.Time}</div>
-          <div>{game.HomeTeam}</div>
-          <div>{game.AwayTeam}</div>
+          <div>{new Date(game.date).toLocaleDateString('sv-SE')}</div> 
+          <div>{game.time}</div>                                        
+          <div>{game.homeTeam}</div>                                      
+          <div>{game.awayTeam}</div>                                   
         </div>
       ))}
     </div>
