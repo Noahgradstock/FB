@@ -8,10 +8,16 @@ const HistogramChart = () => {
   const selectedHomeTeam = useTeamsStore((state) => state.selectedHomeTeam);
   const selectedAwayTeam = useTeamsStore((state) => state.selectedAwayTeam);
 
-  // Nyckeln som används i backendens response
-  const matchupKey = `${selectedHomeTeam}_vs_${selectedAwayTeam}`;
+  if (!selectedHomeTeam || !selectedAwayTeam) {
+    return (
+      <div className="text-gray-600 text-center mt-4">
+        Välj både hemma- och bortalag för att visa statistik.
+      </div>
+    );
+  }
 
-  const stats = matchupData?.head_to_head?.[matchupKey] || null;
+  const matchupKey = `${selectedHomeTeam}_vs_${selectedAwayTeam}`;
+  const stats = matchupData?.head_to_head;
 
   const formattedData = stats
     ? [

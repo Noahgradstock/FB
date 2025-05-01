@@ -40,7 +40,7 @@ const HomeTeamFormChart = () => {
           );
         })}
       </div>
-      <div className="text-center text-sm text-gray-700">
+      <div className="text-center text-sm text-gray-700 font-bold">
         {summary.W} Vinster, {summary.D} Oavgjorda, {summary.L} Förluster
       </div>
     </div>

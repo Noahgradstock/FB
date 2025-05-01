@@ -4,6 +4,8 @@ const useTeamsStore = create((set, get) => ({
   selectedLeague: null,
   selectedHomeTeam: null,
   selectedAwayTeam: null,
+  homeTeamAverages: null,
+  awayTeamAverages: null,
 
   leagueData: null, 
 
@@ -14,6 +16,7 @@ const useTeamsStore = create((set, get) => ({
   teams: [],
 
   headToHeadStats: null,
+  headToHeadAllData: null,
   homeTeamForm: [],
   awayTeamForm: [],
   avgHomeGoals: 0,
@@ -46,7 +49,6 @@ const useTeamsStore = create((set, get) => ({
       });
       const data = await res.json();
   
-      // Omvandla league_table till array
       let leagueTableArray = [];
       if (data.league_table && typeof data.league_table === 'object') {
         leagueTableArray = Object.entries(data.league_table).map(([teamName, stats]) => ({
@@ -85,7 +87,6 @@ const useTeamsStore = create((set, get) => ({
         }));
       }
 
-      // Hämta teams
       const teamsArray = Array.isArray(data.teams) ? data.teams : [];
 
       // Spara allt i Zustand
@@ -129,21 +130,28 @@ const useTeamsStore = create((set, get) => ({
       const homeTeamForm = Object.values(homeTeamFormObject);
       const awayTeamForm = Object.values(awayTeamFormObject);
   
-      const avgHomeGoals = data?.avg_goals?.home_team_avg_goals || 0;
-      const avgAwayGoals = data?.avg_goals?.away_team_avg_goals || 0;
+      const avgHomeGoals = data?.avg_goals_head_to_head?.avg_home_goals_vs_away || 0;
+      const avgAwayGoals = data?.avg_goals_head_to_head?.avg_away_goals_vs_home || 0;
+
+      const homeTeamAverages = data?.team_avg_goals?.[selectedHomeTeam] || null;
+      const awayTeamAverages = data?.team_avg_goals?.[selectedAwayTeam] || null;
   
       const uppcomming_games = data?.uppcomming_games || [];
       const leagueTable = data?.league_table || [];
+
   
       set({
         matchupData: data,
         headToHeadStats,
+        headToHeadAllData: data?.head_to_head || null, 
         homeTeamForm,
         awayTeamForm,
         avgHomeGoals,
         avgAwayGoals,
         uppcomming_games,
         leagueTable,
+        homeTeamAverages,
+        awayTeamAverages, 
       });
   
     } catch (err) {

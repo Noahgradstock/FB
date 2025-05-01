@@ -5,6 +5,27 @@ import { ChevronDownIcon } from "@heroicons/react/16/solid";
 import { useState, useEffect } from "react";
 import useTeamsStore from "../../../store_data/teams_store";
 
+// 👇 Ligakod-mappning
+const leagueNameToCode = {
+  "Premier League": "E0",
+  "Championship": "E1",
+  "League One": "E2",
+  "Scottish Premiership": "SC0",
+  "Scottish Championship": "SC1",
+  "Bundesliga": "D1",
+  "2. Bundesliga": "D2",
+  "La Liga": "SP1",
+  "Segunda División": "SP2",
+};
+
+// 👇 Länder + ligor med riktiga namn
+const data = {
+  England: ["Premier League", "Championship", "League One"],
+  Scotland: ["Scottish Premiership", "Scottish Championship"],
+  Germany: ["Bundesliga", "2. Bundesliga"],
+  Spain: ["La Liga", "Segunda División"],
+};
+
 function DropdownBase({ title, items, onSelect, disabled }) {
   return (
     <div className="relative w-52">
@@ -38,13 +59,6 @@ function DropdownBase({ title, items, onSelect, disabled }) {
 }
 
 export default function CountryLeagueSelector() {
-  const data = {
-    England: ["E0", "E1", "E2"],
-    Scotland: ["SC0", "SC1"],
-    Germany: ["D1", "D2"],
-    Spain: ["SP1", "SP2"],
-  };
-
   const setLeague = useTeamsStore((state) => state.setLeague);
   const setHomeTeam = useTeamsStore((state) => state.setHomeTeam);
   const setAwayTeam = useTeamsStore((state) => state.setAwayTeam);
@@ -65,17 +79,20 @@ export default function CountryLeagueSelector() {
     setAwayTeamLocal(null);
   };
 
-  const handleLeagueSelect = async (league) => {
+  const handleLeagueSelect = async (leagueName) => {
+    const leagueCode = leagueNameToCode[leagueName];
+    if (!leagueCode) return;
+
     setLoading(true);
-    setSelectedLeague(league);
+    setSelectedLeague(leagueName);
     setTeams([]);
     setHomeTeamLocal(null);
     setAwayTeamLocal(null);
 
-    await setLeague(league);
+    await setLeague(leagueCode);
 
     try {
-      const res = await fetch(`http://localhost:8080/api/league?league=${league}`);
+      const res = await fetch(`http://localhost:8080/api/league?league=${leagueCode}`);
       const result = await res.json();
       setTeams(result.teams || []);
     } catch (error) {
