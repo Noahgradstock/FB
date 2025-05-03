@@ -12,6 +12,7 @@ const useTeamsStore = create((set, get) => ({
   matchupData: null,
   fixtures: [],
   recentGames: [], 
+  topScoringTeams: [],
   leagueTable: [],
   teams: [],
 
@@ -96,12 +97,14 @@ const useTeamsStore = create((set, get) => ({
           table: leagueTableArray, 
           nextGames: nextGamesArray, 
           recentGames: recentGamesArray,
-          teams: teamsArray
+          teams: teamsArray,
+          topScoringTeams: data?.top_avg_goals_per_team || [],
         },
         leagueTable: leagueTableArray,
         fixtures: nextGamesArray,
         recentGames: recentGamesArray,
         teams: teamsArray,
+        topScoringTeams: data?.top_avg_goals_per_team || [],
       });
 
     } catch (error) {
@@ -123,6 +126,8 @@ const useTeamsStore = create((set, get) => ({
   
       const headToHeadKey = `${selectedHomeTeam}_vs_${selectedAwayTeam}`;
       const headToHeadStats = data?.head_to_head?.[headToHeadKey] || null;
+      const headToHeadAllData = data?.head_to_head_all_data || {};
+      set({ headToHeadAllData });
   
       const homeTeamFormObject = data?.team_form?.[selectedHomeTeam] || {};
       const awayTeamFormObject = data?.team_form?.[selectedAwayTeam] || {};
@@ -135,7 +140,7 @@ const useTeamsStore = create((set, get) => ({
 
       const homeTeamAverages = data?.team_avg_goals?.[selectedHomeTeam] || null;
       const awayTeamAverages = data?.team_avg_goals?.[selectedAwayTeam] || null;
-  
+
       const uppcomming_games = data?.uppcomming_games || [];
       const leagueTable = data?.league_table || [];
 
@@ -143,7 +148,7 @@ const useTeamsStore = create((set, get) => ({
       set({
         matchupData: data,
         headToHeadStats,
-        headToHeadAllData: data?.head_to_head || null, 
+        headToHeadAllData,
         homeTeamForm,
         awayTeamForm,
         avgHomeGoals,

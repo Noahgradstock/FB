@@ -2,38 +2,61 @@
 
 import useTeamsStore from "../../../store_data/teams_store";
 
-const AwayTeamAvgGoalsDisplay = () => {
-  const { selectedAwayTeam: selectedAwayTeam, awayTeamAverages: awayTeamAverages } = useTeamsStore();
+const TeamAverageComparison = () => {
+  const {
+    selectedHomeTeam,
+    selectedAwayTeam,
+    homeTeamAverages,
+    awayTeamAverages,
+  } = useTeamsStore();
 
-  if (!awayTeamAverages || !selectedAwayTeam) {
+  if (!homeTeamAverages || !awayTeamAverages) {
     return (
       <div className="w-full mt-6 bg-white p-4 rounded shadow-md text-center text-gray-500">
-        Laddar målstatistik för {selectedAwayTeam}...
+        Laddar jämförelse mellan {selectedHomeTeam} och {selectedAwayTeam}...
       </div>
     );
   }
 
+  const rows = [
+    {
+      label: "🏠 Hemmaplan",
+      home: homeTeamAverages.home_avg_goals.toFixed(2),
+      away: awayTeamAverages.home_avg_goals.toFixed(2),
+    },
+    {
+      label: "🚌 Bortaplan",
+      home: homeTeamAverages.away_avg_goals.toFixed(2),
+      away: awayTeamAverages.away_avg_goals.toFixed(2),
+    },
+    {
+      label: "📊 Totalt",
+      home: homeTeamAverages.overall_avg_goals.toFixed(2),
+      away: awayTeamAverages.overall_avg_goals.toFixed(2),
+    },
+  ];
+
   return (
     <div className="w-full mt-6 bg-white p-4 rounded shadow-md">
       <h2 className="text-xl font-bold mb-4 text-center">
-        Genomsnittliga mål/match för: {selectedAwayTeam}
+        Genomsnittliga mål per match – jämförelse
       </h2>
-      <div className="flex justify-center gap-8 mb-4">
-        <div className="text-center">
-          <h3 className="font-semibold text-lg">🏠 Hemmaplan</h3>
-          <div className="text-3xl font-bold">{awayTeamAverages.home_avg_goals.toFixed(2)}</div>
-        </div>
-        <div className="text-center">
-          <h3 className="font-semibold text-lg">🚌 Bortaplan</h3>
-          <div className="text-3xl font-bold">{awayTeamAverages.away_avg_goals.toFixed(2)}</div>
-        </div>
-        <div className="text-center">
-          <h3 className="font-semibold text-lg">📊 Totalt</h3>
-          <div className="text-3xl font-bold">{awayTeamAverages.overall_avg_goals.toFixed(2)}</div>
-        </div>
+
+      <div className="grid grid-cols-3 gap-4 text-center">
+        <div className="text-lg font-semibold">{selectedHomeTeam}</div>
+        <div></div>
+        <div className="text-lg font-semibold">{selectedAwayTeam}</div>
+
+        {rows.map((row, index) => (
+          <div key={index} className="contents">
+            <div className="text-2xl font-bold text-green-700">{row.home}</div>
+            <div className="text-sm text-gray-500 font-medium">{row.label}</div>
+            <div className="text-2xl font-bold text-red-700">{row.away}</div>
+          </div>
+        ))}
       </div>
     </div>
   );
 };
 
-export default AwayTeamAvgGoalsDisplay;
+export default TeamAverageComparison;
